@@ -185,9 +185,9 @@ void Widget::on_pushButton_submit_clicked()
     m_time_counter.setHMS(0,0,0,0);
     QMessageBox::StandardButton reply;
     if (isSuccess()) {
-        reply = QMessageBox::information(this, "胜利", "恭喜你，结果正确！\n是否需要记录时间？", QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::information(this, "胜利", "恭喜你，获胜了！\n是否需要记录时间？", QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes){
-            QString username = QInputDialog::getText(this, "胜利","恭喜你，结果正确！\n请输入您的用户名：", QLineEdit::Normal,"");
+            QString username = QInputDialog::getText(this, "胜利","恭喜你，获胜了！\n请输入您的用户名：", QLineEdit::Normal,"");
             if ("" != username) {
                 QFile file("./record.ini");
                 //不存在创建，存在则打开
@@ -203,7 +203,7 @@ void Widget::on_pushButton_submit_clicked()
             }
         }
     } else {
-        QMessageBox::information(this, "失败", "你输了，结果错误！", "continue");
+        QMessageBox::information(this, "失败", "很遗憾，您输了！", "continue");
     }
 
     reply = QMessageBox::information(this, "重新开始", "想重新开始一局吗？", QMessageBox::Yes | QMessageBox::No);
@@ -541,51 +541,65 @@ void Widget::findTip(){
     if (m_num_a != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_a);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_b != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_b);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_c != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_c);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_d != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_d);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_e != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_e);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_f != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_f);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_g != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_g);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
     if (m_num_h != 0) {
         it = std::find(m_vt_num.begin(), m_vt_num.end(), m_num_h);
         if (it != m_vt_num.end()) {
-            arr_is_visit[*it] = true;
+            arr_is_visit[it - m_vt_num.begin()] = true;
         }
     }
 
-
+    //a b c d e f g h  =>  0 5 6 3 7 2 1 4
+    QString table_tip[8] = {"a", "g", "f", "d", "h", "b", "c", "e"};
+    bool istip = false;
+    for (int index=0; index<8; index++) {
+        if(!arr_is_visit[index]) {
+            int num = m_vt_num[index];
+            QString str = table_tip[index] + "点处可以填 " + QString::number(num);
+            QMessageBox::about(this, "提示", str);
+            istip = true;
+            break;
+        }
+    }
+    if (!istip) {
+        QMessageBox::about(this, "提示", "您已填完所有数字，可以尝试提交答案。");
+    }
 }
