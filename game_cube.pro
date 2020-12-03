@@ -24,6 +24,7 @@ TRANSLATIONS += \
     game_cube_zh_CN.ts
 
 # Default rules for deployment.
+#LIBS+= -lGLU
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
